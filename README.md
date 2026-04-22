@@ -1,130 +1,124 @@
 # PaycheckCalc
 
-A cross-platform paycheck and tax calculator built with [Avalonia UI](https://avaloniaui.net/) and .NET 9. It covers federal, state, and local withholding for all 50 US states and the District of Columbia, with support for self-employment income, annual tax projections, quarterly estimate planning, and more.
+Desktop paycheck and annual tax calculator built with [Avalonia UI](https://avaloniaui.net/) and the .NET 11 preview SDK. The current codebase focuses on 2026 federal, state, and local withholding plus annual tax planning workflows.
 
 ---
 
 ## Features
 
-| Section | Description |
-|---|---|
-| **Calculator** | Per-paycheck federal + state + local withholding using 2026 tax tables |
-| **Self-Employment** | Schedule C / SE tax estimation with QBI deduction (Form 8995/8995-A) |
-| **Saved Paychecks** | Persist and review past paycheck calculations (JSON storage) |
-| **Annual Tax** | Full Form 1040 walkthrough including Schedule 1 and common credits |
-| **Annual Projection** | Projects full-year withholding, YTD totals, and over/under-withholding estimate |
-| **Compare** | Side-by-side comparison of two paycheck scenarios |
-| **Credits** | Child Tax Credit, Education Credits (Form 8863), Saver's Credit (Form 8880), NIIT (Form 8960) |
-| **Jobs & YTD** | Multi-job W-2 inputs with year-to-date Social Security / Medicare coordination |
-| **Other Income** | Adjustments for interest, dividends, capital gains, alimony, student loan interest, etc. |
-| **Quarterly Estimates** | Form 1040-ES installment planner |
-| **What-If** | Scenario modelling — change pay, deductions, or withholding and see the impact |
+- Per-paycheck withholding calculator for federal, state, local, and FICA taxes
+- Self-employment tax calculator with QBI deduction support
+- Annual tax workflow with:
+  - Form 1040 calculation
+  - annual projection
+  - credits
+  - jobs and year-to-date inputs
+  - other income and adjustments
+  - quarterly estimates
+  - what-if analysis
+- Saved paycheck history and saved annual scenarios
+- Scenario comparison for current vs saved data and multi-scenario saved-paycheck comparisons
+- CSV export for paycheck and self-employment results
+- Dynamic per-state input fields driven by each state's calculator schema
 
 ---
 
 ## Tax Coverage
 
 ### Federal
-- **IRS Publication 15-T** — Percentage method (automated payroll tables, 2026)
-- **FICA** — Social Security (6.2 %, $176,100 wage base) and Medicare (1.45 % + 0.9 % Additional Medicare Tax)
-- **Form 1040** — 2026 income-tax brackets, standard deduction, Schedule 1 adjustments
-- **Form 1040-ES** — quarterly estimated-tax safe harbour calculation
 
-### State (all 50 states + DC)
-Every state is registered in `StateCalculatorRegistry`. States with no income tax (e.g. TX, FL, WA) use a no-op adapter; states with complex formulas have dedicated calculators using 2026 withholding tables.
+- IRS Publication 15-T percentage-method withholding tables for 2026
+- FICA withholding, including Social Security wage-base handling and Additional Medicare Tax
+- Form 1040 annual income-tax calculation for 2026
+- Form 1040-ES quarterly estimated-tax calculation
+- Common annual-tax credit calculators, including education, saver's, child-tax, and NIIT-related flows
+
+### State
+
+All 50 states and the District of Columbia are supported through `StateCalculatorRegistry`.
+
+- Dedicated calculator implementations are used for states with custom rules or data files
+- No-income-tax states use `NoIncomeTaxWithholdingAdapter`
+- Remaining supported states use percentage-method adapters backed by shared configuration
 
 ### Local
-| Locality | Coverage |
-|---|---|
-| Pennsylvania | Act 32 EIT (earned-income tax) + LST (local services tax) |
-| New York | New York City resident income tax |
-| Ohio | RITA and CCA municipal withholding |
-| Maryland | County income-tax surtax |
 
-Address-based jurisdiction resolution is available via the Google Maps Geocoding API — the app can auto-detect local tax jurisdictions from a typed home/work address.
+- Pennsylvania: Act 32 EIT and LST
+- New York: New York City resident tax
+- Ohio: RITA and CCA municipal withholding
+- Maryland: county income-tax surtax
+
+The repository also includes geocoding and jurisdiction-resolution service code, but the current desktop app is centered on manual calculator inputs.
 
 ---
 
 ## Project Structure
 
-```
+```text
 PaycheckCalc.slnx
-├── PaycheckCalc.Core/          # Domain logic — no UI dependencies
-│   ├── Models/                 # Input/output DTOs (PaycheckInput, PaycheckResult, …)
-│   ├── Pay/                    # PayCalculator, AnnualProjectionCalculator
-│   ├── Tax/
-│   │   ├── Federal/            # 15-T percentage calculator + annual Form 1040 calculators
-│   │   ├── Fica/               # Social Security & Medicare
-│   │   ├── State/              # IStateWithholdingCalculator + per-state implementations
-│   │   └── Local/              # ILocalWithholdingCalculator + PA/NY/OH/MD implementations
-│   ├── Geocoding/              # IGeocodingService, AddressService
-│   ├── Export/                 # CsvPaycheckExporter, CsvSelfEmploymentExporter
-│   └── Storage/                # IPaycheckRepository, IAnnualScenarioRepository
-│
-├── PaycheckCalc.Avalonia/      # Desktop UI (Avalonia 11, MVVM)
-│   ├── Views/                  # .axaml views for each navigation section
-│   ├── ViewModels/             # CommunityToolkit.Mvvm view-models
-│   ├── Services/               # JurisdictionResolver, GoogleMapsGeocodingService
-│   ├── Storage/                # JSON-backed repository implementations
-│   └── Mappers/                # UI model ↔ domain model mappers
-│
-└── PaycheckCalc.Tests/         # xUnit test project
-    └── (per-state + feature unit tests)
+├── PaycheckCalc.Core/          # Calculation engine, models, tax logic, storage contracts
+│   ├── Data/                   # 2026 tax tables and lookup JSON files
+│   ├── Export/                 # CSV exporters
+│   ├── Geocoding/              # Geocoding contracts and cache types
+│   ├── Models/                 # Domain models and DTOs
+│   ├── Pay/                    # Paycheck and projection calculators
+│   ├── Storage/                # Repository interfaces
+│   └── Tax/                    # Federal, state, local, annual, and self-employment tax logic
+├── PaycheckCalc.Avalonia/      # Avalonia desktop UI
+│   ├── Helpers/
+│   ├── Mappers/
+│   ├── Models/
+│   ├── Services/
+│   ├── Storage/
+│   ├── ViewModels/
+│   └── Views/
+└── PaycheckCalc.Tests/         # xUnit test suite
 ```
 
 ---
 
 ## Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9)
+- [.NET 11 SDK preview 3](https://dotnet.microsoft.com/download/dotnet/11.0) matching `global.json`
 
 ---
 
 ## Getting Started
 
 ```bash
-# Clone
 git clone https://github.com/Fibonacci-0112/AvaloniaCalculator.git
 cd AvaloniaCalculator
 
-# Run the desktop app
-dotnet run --project PaycheckCalc.Avalonia
+# build
+dotnet build PaycheckCalc.slnx
 
-# Run tests
-dotnet test PaycheckCalc.Tests
+# run the desktop app
+dotnet run --project PaycheckCalc.Avalonia/PaycheckCalc.Avalonia.csproj
+
+# run tests
+dotnet test PaycheckCalc.slnx
 ```
 
 ---
 
-## Configuration
+## Data and Storage
 
-### Google Maps Geocoding (optional)
-
-Address-to-jurisdiction resolution uses the [Google Maps Geocoding API](https://developers.google.com/maps/documentation/geocoding). Set your API key before running:
-
-```bash
-export GOOGLE_MAPS_API_KEY=your_key_here
-```
-
-If no key is supplied the geocoding feature is disabled; users can still select their state and local jurisdiction manually.
+- Tax tables are stored under `PaycheckCalc.Core/Data`
+- Saved paychecks, saved annual scenarios, and CSV exports are written under the user's local application data folder in a `PaycheckCalc` directory
 
 ---
 
-## Pay Frequencies
+## Supported Pay Frequencies
 
 `Weekly` · `Biweekly` · `Semimonthly` · `Monthly` · `Quarterly` · `Semiannual` · `Annual` · `Daily`
 
 ---
 
-## Deductions
+## Deductions and Export
 
-Pre-tax and post-tax deductions are supported as either a fixed dollar amount or a percentage of gross pay.
-
----
-
-## Export
-
-Calculated results can be exported to **CSV** for both W-2 paychecks and self-employment summaries.
+- Pre-tax and post-tax deductions are supported as fixed amounts or percentages
+- Paycheck and self-employment result exports are available as CSV
+- PDF export is not currently available in the desktop app
 
 ---
 
@@ -132,10 +126,10 @@ Calculated results can be exported to **CSV** for both W-2 paychecks and self-em
 
 | Layer | Technology |
 |---|---|
-| UI framework | [Avalonia UI](https://avaloniaui.net/) 11.2.7 |
-| UI pattern | MVVM via [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) 8.4.0 |
-| DI container | Microsoft.Extensions.DependencyInjection 9.0 |
-| Serialisation | Newtonsoft.Json 13.0.3 |
-| HTTP client | Microsoft.Extensions.Http 9.0 |
-| Test framework | xUnit 2.9.2 |
-| Target runtime | .NET 9 |
+| UI framework | [Avalonia UI](https://avaloniaui.net/) 12.0.1 |
+| UI pattern | [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) 8.4.2 |
+| Dependency injection | Microsoft.Extensions.DependencyInjection 11.0.0-preview.3.26207.106 |
+| HTTP client | Microsoft.Extensions.Http 11.0.0-preview.3.26207.106 |
+| Serialization | Newtonsoft.Json 13.0.5-beta1 |
+| Test framework | xUnit 2.9.3 |
+| Target framework | .NET 11 preview (`net11.0`) |
