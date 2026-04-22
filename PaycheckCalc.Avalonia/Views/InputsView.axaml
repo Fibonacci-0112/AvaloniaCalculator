@@ -1,7 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
-             x:Class="PaycheckCalc.Avalonia.Views.InputsView">
+             x:Class="PaycheckCalc.Avalonia.Views.InputsView"
+             x:DataType="vm:CalculatorViewModel">
   <ScrollViewer>
     <StackPanel Margin="16" Spacing="8">
       <TextBlock Text="Paycheck Calculator" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -67,13 +68,13 @@
               Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
         <StackPanel Spacing="4">
           <TextBlock Text="Results" FontWeight="Bold" FontSize="16"/>
-          <TextBlock Text="{Binding ResultCard.GrossPayFormatted, StringFormat='Gross Pay: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.FederalWithholdingFormatted, StringFormat='Federal Tax: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.SocialSecurityFormatted, StringFormat='Social Security: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.MedicareFormatted, StringFormat='Medicare: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.StateWithholdingFormatted, StringFormat='State Tax: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.TotalDeductionsFormatted, StringFormat='Total Deductions: {0}'}" />
-          <TextBlock Text="{Binding ResultCard.NetPayFormatted, StringFormat='Net Pay: {0}'}" FontWeight="Bold" FontSize="14"/>
+          <TextBlock Text="{Binding ResultCard.GrossPay, StringFormat='Gross Pay: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.FederalWithholding, StringFormat='Federal Tax: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.SocialSecurityWithholding, StringFormat='Social Security: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.MedicareWithholding, StringFormat='Medicare: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.StateWithholding, StringFormat='State Tax: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.TotalTaxes, StringFormat='Total Deductions: {0:C}'}" />
+          <TextBlock Text="{Binding ResultCard.NetPay, StringFormat='Net Pay: {0:C}'}" FontWeight="Bold" FontSize="14"/>
           <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Margin="0,8,0,0"/>
         </StackPanel>
       </Border>
