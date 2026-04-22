@@ -9,7 +9,7 @@
       <TextBlock Text="Configure your annual tax scenario using the Jobs &amp; YTD, Credits, and Other Income pages."/>
       <Button Content="Calculate Annual Tax" Command="{Binding CalculateCommand}" HorizontalAlignment="Stretch"
               Margin="0,12,0,0" Padding="8"/>
-      <TextBox Text="{Binding ScenarioNameEntry}" Watermark="Scenario name (optional)"/>
+      <TextBox Text="{Binding ScenarioNameEntry}" PlaceholderText="Scenario name (optional)"/>
       <Button Content="Save Scenario" Command="{Binding SaveScenarioCommand}" HorizontalAlignment="Left"/>
 
       <Border IsVisible="{Binding Session.ResultModel, Converter={x:Static ObjectConverters.IsNotNull}}"
