@@ -40,6 +40,14 @@ public partial class JobsAndYtdViewModel : ObservableObject
             Session.W2Jobs.Remove(job);
     }
 
+    /// <summary>Removes the last job in the list, if any.</summary>
+    [RelayCommand]
+    private void RemoveLastW2Job()
+    {
+        if (Session.W2Jobs.Count > 0)
+            Session.W2Jobs.RemoveAt(Session.W2Jobs.Count - 1);
+    }
+
     /// <summary>Manually triggers a summary rebuild (e.g. after a row's amounts change).</summary>
     [RelayCommand]
     public void RebuildSummary()

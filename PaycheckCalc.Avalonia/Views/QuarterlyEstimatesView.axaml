@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="PaycheckCalc.Avalonia.Views.QuarterlyEstimatesView">
+             xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             x:Class="PaycheckCalc.Avalonia.Views.QuarterlyEstimatesView"
+             x:DataType="vm:QuarterlyEstimatesViewModel">
   <ScrollViewer>
     <StackPanel Margin="16" Spacing="8">
       <TextBlock Text="Quarterly Estimates" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -22,10 +24,10 @@
               Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
         <StackPanel Spacing="4">
           <TextBlock Text="Quarterly Estimates" FontWeight="Bold" FontSize="16"/>
-          <TextBlock Text="{Binding Result.Q1Amount, StringFormat='Q1 (Apr 15): {0:C}'}" />
-          <TextBlock Text="{Binding Result.Q2Amount, StringFormat='Q2 (Jun 15): {0:C}'}" />
-          <TextBlock Text="{Binding Result.Q3Amount, StringFormat='Q3 (Sep 15): {0:C}'}" />
-          <TextBlock Text="{Binding Result.Q4Amount, StringFormat='Q4 (Jan 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Installments[0].Amount, StringFormat='Q1 (Apr 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Installments[1].Amount, StringFormat='Q2 (Jun 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Installments[2].Amount, StringFormat='Q3 (Sep 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Installments[3].Amount, StringFormat='Q4 (Jan 15): {0:C}'}" />
         </StackPanel>
       </Border>
     </StackPanel>

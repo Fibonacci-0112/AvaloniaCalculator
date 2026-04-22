@@ -1,22 +1,24 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="PaycheckCalc.Avalonia.Views.CompareView">
+             xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             x:Class="PaycheckCalc.Avalonia.Views.CompareView"
+             x:DataType="vm:CompareViewModel">
   <ScrollViewer>
     <StackPanel Margin="16" Spacing="8">
       <TextBlock Text="Scenario Compare" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
       <TextBlock Text="Compare two paycheck scenarios side by side."/>
-      <Button Content="Compare" Command="{Binding CompareCommand}" HorizontalAlignment="Stretch" Padding="8"/>
+      <Button Content="Clear Compare" Command="{Binding ClearCompareCommand}" HorizontalAlignment="Stretch" Padding="8"/>
 
-      <Grid ColumnDefinitions="*,*" IsVisible="{Binding ScenarioA, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <Grid ColumnDefinitions="*,*" IsVisible="{Binding HasLegacyCompare}">
         <StackPanel Grid.Column="0" Margin="0,8,4,0">
           <TextBlock Text="Scenario A" FontWeight="Bold" FontSize="14"/>
-          <TextBlock Text="{Binding ScenarioA.GrossPay, StringFormat='Gross: {0:C}'}" />
-          <TextBlock Text="{Binding ScenarioA.NetPay, StringFormat='Net: {0:C}'}" FontWeight="Bold"/>
+          <TextBlock Text="{Binding Calculator.SavedScenario.ResultCard.GrossPay, StringFormat='Gross: {0:C}'}" />
+          <TextBlock Text="{Binding Calculator.SavedScenario.ResultCard.NetPay, StringFormat='Net: {0:C}'}" FontWeight="Bold"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Margin="4,8,0,0">
           <TextBlock Text="Scenario B" FontWeight="Bold" FontSize="14"/>
-          <TextBlock Text="{Binding ScenarioB.GrossPay, StringFormat='Gross: {0:C}'}" />
-          <TextBlock Text="{Binding ScenarioB.NetPay, StringFormat='Net: {0:C}'}" FontWeight="Bold"/>
+          <TextBlock Text="{Binding Calculator.ResultCard.GrossPay, StringFormat='Gross: {0:C}'}" />
+          <TextBlock Text="{Binding Calculator.ResultCard.NetPay, StringFormat='Net: {0:C}'}" FontWeight="Bold"/>
         </StackPanel>
       </Grid>
     </StackPanel>

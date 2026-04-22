@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="PaycheckCalc.Avalonia.Views.SelfEmploymentView">
+             xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             x:Class="PaycheckCalc.Avalonia.Views.SelfEmploymentView"
+             x:DataType="vm:SelfEmploymentViewModel">
   <ScrollViewer>
     <StackPanel Margin="16" Spacing="8">
       <TextBlock Text="Self-Employment Tax Calculator" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -40,9 +42,9 @@
         <StackPanel Spacing="4">
           <TextBlock Text="Results" FontWeight="Bold" FontSize="16"/>
           <TextBlock Text="{Binding ResultModel.NetProfit, StringFormat='Net Profit: {0:C}'}" />
-          <TextBlock Text="{Binding ResultModel.SelfEmploymentTax, StringFormat='SE Tax: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.TotalSeTax, StringFormat='SE Tax: {0:C}'}" />
           <TextBlock Text="{Binding ResultModel.FederalIncomeTax, StringFormat='Federal Income Tax: {0:C}'}" />
-          <TextBlock Text="{Binding ResultModel.TotalTaxBurden, StringFormat='Total Tax Burden: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.TotalTax, StringFormat='Total Tax Burden: {0:C}'}" />
           <TextBlock Text="{Binding ResultModel.EffectiveTaxRate, StringFormat='Effective Rate: {0:P1}'}" FontWeight="Bold"/>
           <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Margin="0,8,0,0"/>
         </StackPanel>

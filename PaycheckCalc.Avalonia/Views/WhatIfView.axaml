@@ -1,6 +1,9 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="PaycheckCalc.Avalonia.Views.WhatIfView">
+             xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             xmlns:models="clr-namespace:PaycheckCalc.Avalonia.Models"
+             x:Class="PaycheckCalc.Avalonia.Views.WhatIfView"
+             x:DataType="vm:WhatIfViewModel">
   <ScrollViewer>
     <StackPanel Margin="16" Spacing="8">
       <TextBlock Text="What-If Analysis" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
@@ -23,16 +26,25 @@
         <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding VariantQualifyingChildrenDelta}" Minimum="-10" Maximum="10" Margin="0,4,0,0"/>
       </Grid>
 
-      <Button Content="Run What-If" Command="{Binding RunCommand}" HorizontalAlignment="Stretch"
+      <Button Content="Run What-If" Command="{Binding RunVariantCommand}" HorizontalAlignment="Stretch"
               Margin="0,12,0,0" Padding="8"/>
 
       <Border IsVisible="{Binding Comparison, Converter={x:Static ObjectConverters.IsNotNull}}"
               Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
         <StackPanel Spacing="4">
           <TextBlock Text="What-If Comparison" FontWeight="Bold" FontSize="16"/>
-          <TextBlock Text="{Binding Comparison.BaselineFederalTax, StringFormat='Baseline Federal Tax: {0:C}'}" />
-          <TextBlock Text="{Binding Comparison.VariantFederalTax, StringFormat='Variant Federal Tax: {0:C}'}" />
-          <TextBlock Text="{Binding Comparison.FederalTaxDelta, StringFormat='Federal Tax Difference: {0:C}'}" FontWeight="Bold"/>
+          <ItemsControl ItemsSource="{Binding Comparison.Rows}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="models:WhatIfRowModel">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" Margin="0,2">
+                  <TextBlock Grid.Column="0" Text="{Binding Label}" />
+                  <TextBlock Grid.Column="1" Text="{Binding Baseline, StringFormat={}{0:C}}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="2" Text="{Binding Variant, StringFormat={}{0:C}}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="3" Text="{Binding DeltaFormatted}" FontWeight="Bold" Margin="8,0,0,0"/>
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
         </StackPanel>
       </Border>
     </StackPanel>
