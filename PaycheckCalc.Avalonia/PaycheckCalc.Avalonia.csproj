@@ -15,9 +15,9 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.1" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-preview.3.26207.106" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="11.0.0-preview.3.26207.106" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="11.0.0-preview.3.26207.106" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.100-preview.3.26207.106" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="11.0.100-preview.3.26207.106" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="11.0.100-preview.3.26207.106" />
   </ItemGroup>
 
   <ItemGroup>
