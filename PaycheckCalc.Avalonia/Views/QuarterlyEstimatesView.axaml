@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PaycheckCalc.Avalonia.Views.QuarterlyEstimatesView">
+  <ScrollViewer>
+    <StackPanel Margin="16" Spacing="8">
+      <TextBlock Text="Quarterly Estimates" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Projected Total Tax Override ($):" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProjectedTotalTaxOverride}" />
+        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Use Projected Total Tax Override"
+                  IsChecked="{Binding UseProjectedTotalTaxOverride}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Expected Withholding Override ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ExpectedWithholdingOverride}" Margin="0,4,0,0"/>
+      </Grid>
+
+      <Button Content="Calculate Estimates" Command="{Binding CalculateCommand}" HorizontalAlignment="Stretch"
+              Margin="0,12,0,0" Padding="8"/>
+
+      <Border IsVisible="{Binding Result, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Quarterly Estimates" FontWeight="Bold" FontSize="16"/>
+          <TextBlock Text="{Binding Result.Q1Amount, StringFormat='Q1 (Apr 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Q2Amount, StringFormat='Q2 (Jun 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Q3Amount, StringFormat='Q3 (Sep 15): {0:C}'}" />
+          <TextBlock Text="{Binding Result.Q4Amount, StringFormat='Q4 (Jan 15): {0:C}'}" />
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

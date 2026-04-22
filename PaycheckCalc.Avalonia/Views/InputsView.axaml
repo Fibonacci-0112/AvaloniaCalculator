@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             x:Class="PaycheckCalc.Avalonia.Views.InputsView">
+  <ScrollViewer>
+    <StackPanel Margin="16" Spacing="8">
+      <TextBlock Text="Paycheck Calculator" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+
+      <!-- Pay Settings -->
+      <TextBlock Text="Pay Settings" FontWeight="SemiBold" FontSize="14"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,4,0,0">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Pay Frequency:" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Frequencies}"
+                  SelectedItem="{Binding SelectedFrequencyPickerItem}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="State:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding StatePickerItems}"
+                  SelectedItem="{Binding SelectedStatePickerItem}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Federal Filing Status:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding FederalStatuses}"
+                  SelectedItem="{Binding SelectedFederalPickerItem}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Paycheck #:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding PaycheckNumber}" Minimum="1" Maximum="52" Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Wages -->
+      <TextBlock Text="Wages" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,0"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Hourly Rate ($):" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding HourlyRate}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Regular Hours:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RegularHours}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Overtime Hours:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding OvertimeHours}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="OT Multiplier:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OvertimeMultiplier}" Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Federal W-4 -->
+      <TextBlock Text="Federal W-4" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,0"/>
+      <CheckBox Content="Step 2: Multiple Jobs / Spouse Works" IsChecked="{Binding FederalStep2Checked}"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Step 3 Credits ($):" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FederalStep3Credits}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Step 4a Other Income ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FederalStep4aOtherIncome}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Step 4b Deductions ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FederalStep4bDeductions}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Step 4c Extra Withholding ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FederalStep4cExtraWithholding}" Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Calculate Button -->
+      <Button Content="Calculate" Command="{Binding CalculateCommand}" HorizontalAlignment="Stretch"
+              Margin="0,12,0,0" Padding="8" />
+
+      <!-- Results -->
+      <Border IsVisible="{Binding ResultCard, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Results" FontWeight="Bold" FontSize="16"/>
+          <TextBlock Text="{Binding ResultCard.GrossPayFormatted, StringFormat='Gross Pay: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.FederalWithholdingFormatted, StringFormat='Federal Tax: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.SocialSecurityFormatted, StringFormat='Social Security: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.MedicareFormatted, StringFormat='Medicare: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.StateWithholdingFormatted, StringFormat='State Tax: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.TotalDeductionsFormatted, StringFormat='Total Deductions: {0}'}" />
+          <TextBlock Text="{Binding ResultCard.NetPayFormatted, StringFormat='Net Pay: {0}'}" FontWeight="Bold" FontSize="14"/>
+          <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Margin="0,8,0,0"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
