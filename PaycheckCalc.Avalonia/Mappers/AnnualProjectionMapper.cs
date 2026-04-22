@@ -26,6 +26,8 @@ public static class AnnualProjectionMapper
             AnnualizedFederalWithholding = projection.AnnualizedFederalWithholding,
             AnnualizedStateWithholding = projection.AnnualizedStateWithholding,
             AnnualizedFica = projection.AnnualizedFica,
+            AnnualizedSocialSecurity = projection.AnnualizedSocialSecurity,
+            AnnualizedMedicare = projection.AnnualizedMedicare,
             AnnualizedNetPay = projection.AnnualizedNetPay,
 
             ProjectedYtdGrossPay = projection.ProjectedYtdGrossPay,

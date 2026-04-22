@@ -40,7 +40,9 @@ public sealed class AnnualProjectionCalculator
         decimal annualStateTaxable = R(result.StateTaxableWages * periods);
         decimal annualFedWithholding = R(result.FederalWithholding * periods);
         decimal annualStateWithholding = R(result.StateWithholding * periods);
-        decimal annualFica = R((result.SocialSecurityWithholding + result.MedicareWithholding + result.AdditionalMedicareWithholding) * periods);
+        decimal annualSocialSecurity = R(result.SocialSecurityWithholding * periods);
+        decimal annualMedicare = R((result.MedicareWithholding + result.AdditionalMedicareWithholding) * periods);
+        decimal annualFica = R(annualSocialSecurity + annualMedicare);
         decimal annualNet = R(result.NetPay * periods);
 
         // ── Projected YTD (per-period × current paycheck number) ─
@@ -92,6 +94,8 @@ public sealed class AnnualProjectionCalculator
             AnnualizedFederalWithholding = annualFedWithholding,
             AnnualizedStateWithholding = annualStateWithholding,
             AnnualizedFica = annualFica,
+            AnnualizedSocialSecurity = annualSocialSecurity,
+            AnnualizedMedicare = annualMedicare,
             AnnualizedNetPay = annualNet,
 
             ProjectedYtdGrossPay = ytdGross,

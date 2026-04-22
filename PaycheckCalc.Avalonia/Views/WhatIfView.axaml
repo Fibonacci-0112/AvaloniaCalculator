@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
              xmlns:models="clr-namespace:PaycheckCalc.Avalonia.Models"
+             xmlns:helpers="clr-namespace:PaycheckCalc.Avalonia.Helpers"
              x:Class="PaycheckCalc.Avalonia.Views.WhatIfView"
              x:DataType="vm:WhatIfViewModel">
   <ScrollViewer>
@@ -19,8 +20,11 @@
         <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding StatePickerItems}"
                   SelectedItem="{Binding VariantStatePickerItem}" Margin="0,4,0,0"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Additional Pre-Tax 401k ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding VariantAdditionalPreTax401k}" Margin="0,4,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Additional Pre-Tax 401k:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding VariantAdditionalPreTax401k, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Qualifying Children Delta:" VerticalAlignment="Center" Margin="0,4,0,0"/>
         <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding VariantQualifyingChildrenDelta}" Minimum="-10" Maximum="10" Margin="0,4,0,0"/>
