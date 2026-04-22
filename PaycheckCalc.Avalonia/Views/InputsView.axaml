@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             xmlns:helpers="clr-namespace:PaycheckCalc.Avalonia.Helpers"
              x:Class="PaycheckCalc.Avalonia.Views.InputsView"
              x:DataType="vm:CalculatorViewModel">
   <ScrollViewer>
@@ -29,34 +30,56 @@
       <!-- Wages -->
       <TextBlock Text="Wages" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,0"/>
       <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Hourly Rate ($):" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding HourlyRate}" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Hourly Rate:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding HourlyRate, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Regular Hours:" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding RegularHours}" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding RegularHours, Converter={x:Static helpers:DecimalFormatConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Decimal"
+                 Margin="0,4,0,0"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Overtime Hours:" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding OvertimeHours}" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding OvertimeHours, Converter={x:Static helpers:DecimalFormatConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Decimal"
+                 Margin="0,4,0,0"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="OT Multiplier:" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OvertimeMultiplier}" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 Text="{Binding OvertimeMultiplier, Converter={x:Static helpers:DecimalFormatConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Decimal"
+                 Margin="0,4,0,0"/>
       </Grid>
 
       <!-- Federal W-4 -->
       <TextBlock Text="Federal W-4" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,0"/>
       <CheckBox Content="Step 2: Multiple Jobs / Spouse Works" IsChecked="{Binding FederalStep2Checked}"/>
       <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Step 3 Credits ($):" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FederalStep3Credits}" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Step 3 Credits:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding FederalStep3Credits, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Step 4a Other Income ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FederalStep4aOtherIncome}" Margin="0,4,0,0"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Step 4a Other Income:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding FederalStep4aOtherIncome, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Step 4b Deductions ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FederalStep4bDeductions}" Margin="0,4,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Step 4b Deductions:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding FederalStep4bDeductions, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Step 4c Extra Withholding ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FederalStep4cExtraWithholding}" Margin="0,4,0,0"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Step 4c Extra Withholding:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 Text="{Binding FederalStep4cExtraWithholding, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
       </Grid>
 
       <!-- Calculate Button -->
@@ -75,7 +98,18 @@
           <TextBlock Text="{Binding ResultCard.StateWithholding, StringFormat='State Tax: {0:C}'}" />
           <TextBlock Text="{Binding ResultCard.TotalTaxes, StringFormat='Total Deductions: {0:C}'}" />
           <TextBlock Text="{Binding ResultCard.NetPay, StringFormat='Net Pay: {0:C}'}" FontWeight="Bold" FontSize="14"/>
-          <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Margin="0,8,0,0"/>
+          <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,8,0,0">
+            <Button Content="Export CSV" Command="{Binding ExportCsvCommand}"/>
+            <Button x:Name="SavePaycheckButton"
+                    Content="{Binding SaveButtonText}"
+                    Click="SavePaycheckButton_Click"/>
+            <Button Content="Clear Loaded"
+                    IsVisible="{Binding HasLoadedPaycheck}"
+                    Command="{Binding ClearLoadedPaycheckCommand}"/>
+          </StackPanel>
+          <TextBlock IsVisible="{Binding HasLoadedPaycheck}"
+                     Text="{Binding LoadedPaycheckName, StringFormat='Editing: {0}'}"
+                     Foreground="Gray" FontSize="11"/>
         </StackPanel>
       </Border>
     </StackPanel>

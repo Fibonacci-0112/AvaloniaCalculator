@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             xmlns:helpers="clr-namespace:PaycheckCalc.Avalonia.Helpers"
              x:Class="PaycheckCalc.Avalonia.Views.QuarterlyEstimatesView"
              x:DataType="vm:QuarterlyEstimatesViewModel">
   <ScrollViewer>
@@ -8,13 +9,18 @@
       <TextBlock Text="Quarterly Estimates" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
 
       <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Projected Total Tax Override ($):" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ProjectedTotalTaxOverride}" />
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Projected Total Tax Override:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding ProjectedTotalTaxOverride, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"/>
         <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="Use Projected Total Tax Override"
                   IsChecked="{Binding UseProjectedTotalTaxOverride}" Margin="0,4,0,0"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Expected Withholding Override ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding ExpectedWithholdingOverride}" Margin="0,4,0,0"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Expected Withholding Override:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding ExpectedWithholdingOverride, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
       </Grid>
 
       <Button Content="Calculate Estimates" Command="{Binding CalculateCommand}" HorizontalAlignment="Stretch"

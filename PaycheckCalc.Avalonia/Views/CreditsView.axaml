@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:PaycheckCalc.Avalonia.ViewModels"
+             xmlns:services="clr-namespace:PaycheckCalc.Avalonia.Services"
+             xmlns:helpers="clr-namespace:PaycheckCalc.Avalonia.Helpers"
              x:Class="PaycheckCalc.Avalonia.Views.CreditsView"
              x:DataType="vm:CreditsViewModel">
   <ScrollViewer>
@@ -8,13 +10,111 @@
       <TextBlock Text="Tax Credits" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
       <TextBlock Text="Configure your tax credits for the annual tax calculation."/>
 
-      <TextBlock Text="Child &amp; Dependent Care Credits" FontWeight="SemiBold" Margin="0,8,0,0"/>
-      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+      <!-- Child Tax Credit / Credit for Other Dependents -->
+      <TextBlock Text="Child Tax Credit &amp; Credit for Other Dependents" FontWeight="SemiBold" FontSize="14" Margin="0,8,0,0"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Qualifying Children:" VerticalAlignment="Center"/>
         <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding Session.CtcQualifyingChildren}" Minimum="0"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="Other Dependents:" VerticalAlignment="Center" Margin="0,4,0,0"/>
         <NumericUpDown Grid.Row="1" Grid.Column="1" Value="{Binding Session.CtcOtherDependents}" Minimum="0" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Earned Income:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Session.CtcEarnedIncome, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
+
+        <CheckBox Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                  Content="Use structured CTC computation"
+                  IsChecked="{Binding Session.UseStructuredChildTaxCredit}"
+                  Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Form 8863: Education Credits (American Opportunity / Lifetime Learning) -->
+      <TextBlock Text="Education Credits (Form 8863)" FontWeight="SemiBold" FontSize="14" Margin="0,12,0,0"/>
+      <TextBlock Text="American Opportunity Credit &amp; Lifetime Learning Credit"
+                 FontSize="11" Foreground="Gray"/>
+      <ItemsControl ItemsSource="{Binding Session.EducationStudents}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate DataType="services:EducationStudentItemViewModel">
+            <Border Padding="8" Margin="0,2" Background="#F8F8F8" CornerRadius="4">
+              <StackPanel Spacing="4">
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+                  <TextBlock Grid.Row="0" Grid.Column="0" Text="Student Name:" VerticalAlignment="Center"/>
+                  <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+
+                  <TextBlock Grid.Row="1" Grid.Column="0" Text="Qualified Expenses:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+                  <TextBox Grid.Row="1" Grid.Column="1"
+                           Text="{Binding QualifiedExpenses, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                           helpers:FormattedInput.Mode="Money"
+                           Margin="0,4,0,0"/>
+                </Grid>
+                <CheckBox Content="Claim American Opportunity Credit"
+                          IsChecked="{Binding ClaimAmericanOpportunityCredit}"/>
+                <CheckBox Content="Claim Lifetime Learning Credit"
+                          IsChecked="{Binding ClaimLifetimeLearningCredit}"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <StackPanel Orientation="Horizontal" Spacing="8">
+        <Button Content="Add Student" Command="{Binding AddStudentCommand}"/>
+      </StackPanel>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Modified AGI Override:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Session.EducationModifiedAgiOverride, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
+        <CheckBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                  Content="Use structured Form 8863 computation"
+                  IsChecked="{Binding Session.UseStructuredEducationCredits}"
+                  Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Form 8880: Saver's Credit -->
+      <TextBlock Text="Saver's Credit (Form 8880)" FontWeight="SemiBold" FontSize="14" Margin="0,12,0,0"/>
+      <TextBlock Text="Retirement Savings Contributions Credit"
+                 FontSize="11" Foreground="Gray"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Taxpayer Contributions:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Session.SaversTaxpayerContributions, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Spouse Contributions:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding Session.SaversSpouseContributions, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
+
+        <CheckBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                  Content="Use structured Form 8880 computation"
+                  IsChecked="{Binding Session.UseStructuredSaversCredit}"
+                  Margin="0,4,0,0"/>
+      </Grid>
+
+      <!-- Other pre-computed credits -->
+      <TextBlock Text="Other Credits (pre-computed totals)" FontWeight="SemiBold" FontSize="14" Margin="0,12,0,0"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Nonrefundable Credits:" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Text="{Binding Session.NonrefundableCredits, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Refundable Credits:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding Session.RefundableCredits, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Precomputed Child Tax Credit:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Text="{Binding Session.PrecomputedChildTaxCredit, Converter={x:Static helpers:MoneyConverter.Instance}}"
+                 helpers:FormattedInput.Mode="Money"
+                 Margin="0,4,0,0"/>
       </Grid>
     </StackPanel>
   </ScrollViewer>

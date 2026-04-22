@@ -22,6 +22,10 @@ public sealed class AnnualProjectionModel
     public decimal AnnualizedFederalWithholding { get; init; }
     public decimal AnnualizedStateWithholding { get; init; }
     public decimal AnnualizedFica { get; init; }
+    /// <summary>Annualized Social Security (OASDI) portion of FICA.</summary>
+    public decimal AnnualizedSocialSecurity { get; init; }
+    /// <summary>Annualized Medicare portion of FICA (regular + Additional Medicare).</summary>
+    public decimal AnnualizedMedicare { get; init; }
     public decimal AnnualizedNetPay { get; init; }
 
     // ── Projected YTD ───────────────────────────────────────

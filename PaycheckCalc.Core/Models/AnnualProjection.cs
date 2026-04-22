@@ -22,6 +22,19 @@ public sealed class AnnualProjection
     public decimal AnnualizedFederalWithholding { get; init; }
     public decimal AnnualizedStateWithholding { get; init; }
     public decimal AnnualizedFica { get; init; }
+    /// <summary>
+    /// Annualized Social Security withholding (the 6.2% OASDI portion of FICA,
+    /// capped at the Social Security wage base). Broken out from
+    /// <see cref="AnnualizedFica"/> so the UI can display Social Security and
+    /// Medicare separately.
+    /// </summary>
+    public decimal AnnualizedSocialSecurity { get; init; }
+    /// <summary>
+    /// Annualized Medicare withholding (the 1.45% regular Medicare rate plus
+    /// any 0.9% Additional Medicare withholding). Broken out from
+    /// <see cref="AnnualizedFica"/>.
+    /// </summary>
+    public decimal AnnualizedMedicare { get; init; }
     public decimal AnnualizedNetPay { get; init; }
 
     // ── Projected YTD (per-period × current paycheck number) ─
