@@ -69,23 +69,23 @@ public static class FormattedInput
         }
     }
 
-    private static void OnGotFocus(object? sender, GotFocusEventArgs e)
-    {
-        if (sender is not TextBox tb) return;
-        var mode = GetMode(tb);
-        if (mode == FormatKind.None) return;
+    private static void OnGotFocus(object? sender, RoutedEventArgs e)
+{
+    if (sender is not TextBox tb) return;
+    var mode = GetMode(tb);
+    if (mode == FormatKind.None) return;
 
-        var text = tb.Text ?? string.Empty;
-        // Strip currency / grouping formatting so the user can edit freely.
-        var raw = text.Replace("$", "", StringComparison.Ordinal)
-                      .Replace(",", "", StringComparison.Ordinal)
-                      .Trim();
-        if (!string.Equals(raw, text, StringComparison.Ordinal))
-        {
-            tb.Text = raw;
-            tb.SelectAll();
-        }
+    var text = tb.Text ?? string.Empty;
+    var raw = text.Replace("$", "", StringComparison.Ordinal)
+                  .Replace(",", "", StringComparison.Ordinal)
+                  .Trim();
+
+    if (!string.Equals(raw, text, StringComparison.Ordinal))
+    {
+        tb.Text = raw;
+        tb.SelectAll();
     }
+}
 
     private static void OnLostFocus(object? sender, RoutedEventArgs e)
     {
