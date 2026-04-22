@@ -3,6 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Layout;
 using PaycheckCalc.Avalonia.ViewModels;
 using System.Threading.Tasks;
+using Thickness = Avalonia.Thickness;
 
 namespace PaycheckCalc.Avalonia.Views;
 
@@ -59,7 +60,7 @@ public partial class InputsView : UserControl
             SizeToContent = SizeToContent.Height,
             Content = new StackPanel
             {
-                Margin = new Avalonia.Thickness(16),
+                Margin = new Thickness(16),
                 Spacing = 8,
                 Children =
                 {
