@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PaycheckCalc.Avalonia.Views.AnnualTaxView">
+  <ScrollViewer>
+    <StackPanel Margin="16" Spacing="8">
+      <TextBlock Text="Annual Tax Calculator" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+      <TextBlock Text="Configure your annual tax scenario using the Jobs &amp; YTD, Credits, and Other Income pages."/>
+      <Button Content="Calculate Annual Tax" Command="{Binding CalculateAsyncCommand}" HorizontalAlignment="Stretch"
+              Margin="0,12,0,0" Padding="8"/>
+      <TextBox Text="{Binding ScenarioNameEntry}" Watermark="Scenario name (optional)"/>
+      <Button Content="Save Scenario" Command="{Binding SaveScenarioAsyncCommand}" HorizontalAlignment="Left"/>
+
+      <Border IsVisible="{Binding Session.Result, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Annual Tax Results" FontWeight="Bold" FontSize="16"/>
+          <TextBlock Text="{Binding Session.Result.AgiFormatted, StringFormat='AGI: {0}'}" />
+          <TextBlock Text="{Binding Session.Result.TaxableIncomeFormatted, StringFormat='Taxable Income: {0}'}" />
+          <TextBlock Text="{Binding Session.Result.FederalTaxFormatted, StringFormat='Federal Tax: {0}'}" />
+          <TextBlock Text="{Binding Session.Result.EffectiveFederalRateFormatted, StringFormat='Effective Rate: {0}'}" FontWeight="Bold"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

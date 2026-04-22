@@ -1,0 +1,52 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PaycheckCalc.Avalonia.Views.SelfEmploymentView">
+  <ScrollViewer>
+    <StackPanel Margin="16" Spacing="8">
+      <TextBlock Text="Self-Employment Tax Calculator" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Federal Filing Status:" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding FederalStatuses}"
+                  SelectedItem="{Binding SelectedFederalPickerItem}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="State:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding StatePickerItems}"
+                  SelectedItem="{Binding SelectedStatePickerItem}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Gross Revenue ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding GrossRevenue}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Cost of Goods Sold ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CostOfGoodsSold}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="Business Expenses ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding TotalBusinessExpenses}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="Other Income ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding OtherIncome}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="Estimated Tax Payments ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding EstimatedTaxPayments}" Margin="0,4,0,0"/>
+      </Grid>
+
+      <CheckBox Content="Specified Service Business (SSTB)" IsChecked="{Binding IsSpecifiedServiceBusiness}" Margin="0,8,0,0"/>
+
+      <Button Content="Calculate" Command="{Binding CalculateCommand}" HorizontalAlignment="Stretch"
+              Margin="0,12,0,0" Padding="8" />
+
+      <Border IsVisible="{Binding ResultModel, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="Results" FontWeight="Bold" FontSize="16"/>
+          <TextBlock Text="{Binding ResultModel.NetProfit, StringFormat='Net Profit: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.SelfEmploymentTax, StringFormat='SE Tax: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.FederalIncomeTax, StringFormat='Federal Income Tax: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.TotalTaxBurden, StringFormat='Total Tax Burden: {0:C}'}" />
+          <TextBlock Text="{Binding ResultModel.EffectiveTaxRate, StringFormat='Effective Rate: {0:P1}'}" FontWeight="Bold"/>
+          <Button Content="Export CSV" Command="{Binding ExportCsvCommand}" Margin="0,8,0,0"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="PaycheckCalc.Avalonia/PaycheckCalc.Avalonia.csproj" />
+  <Project Path="PaycheckCalc.Core/PaycheckCalc.Core.csproj" />
+  <Project Path="PaycheckCalc.Tests/PaycheckCalc.Tests.csproj" />
+</Solution>

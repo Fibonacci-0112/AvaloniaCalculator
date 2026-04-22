@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PaycheckCalc.Avalonia.Views.SavedPaychecksView">
+  <StackPanel Margin="16" Spacing="8">
+    <TextBlock Text="Saved Paychecks" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+    <Button Content="Refresh" Command="{Binding LoadAsync}" HorizontalAlignment="Left"/>
+    <ListBox ItemsSource="{Binding SavedPaychecks}" Height="500">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border Padding="8" Margin="2" Background="#F8F8F8" CornerRadius="4">
+            <StackPanel>
+              <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+              <TextBlock Text="{Binding StateName}"/>
+              <TextBlock Text="{Binding GrossPay, StringFormat='Gross: {0:C}'}"/>
+              <TextBlock Text="{Binding NetPay, StringFormat='Net: {0:C}'}" FontWeight="Bold"/>
+              <TextBlock Text="{Binding DateDisplay}" Foreground="Gray" FontSize="11"/>
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="PaycheckCalc.Avalonia.Views.WhatIfView">
+  <ScrollViewer>
+    <StackPanel Margin="16" Spacing="8">
+      <TextBlock Text="What-If Analysis" FontSize="20" FontWeight="Bold" Margin="0,0,0,8"/>
+      <TextBlock Text="Compare your current tax scenario against a variant."/>
+
+      <TextBlock Text="Variant Settings" FontWeight="SemiBold" Margin="0,8,0,0"/>
+      <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto">
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Filing Status:" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding FederalStatuses}"
+                  SelectedItem="{Binding VariantFilingStatusPickerItem}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="State:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding StatePickerItems}"
+                  SelectedItem="{Binding VariantStatePickerItem}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Additional Pre-Tax 401k ($):" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding VariantAdditionalPreTax401k}" Margin="0,4,0,0"/>
+
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="Qualifying Children Delta:" VerticalAlignment="Center" Margin="0,4,0,0"/>
+        <NumericUpDown Grid.Row="3" Grid.Column="1" Value="{Binding VariantQualifyingChildrenDelta}" Minimum="-10" Maximum="10" Margin="0,4,0,0"/>
+      </Grid>
+
+      <Button Content="Run What-If" Command="{Binding RunCommand}" HorizontalAlignment="Stretch"
+              Margin="0,12,0,0" Padding="8"/>
+
+      <Border IsVisible="{Binding Comparison, Converter={x:Static ObjectConverters.IsNotNull}}"
+              Background="#F0F0F0" CornerRadius="4" Padding="12" Margin="0,8,0,0">
+        <StackPanel Spacing="4">
+          <TextBlock Text="What-If Comparison" FontWeight="Bold" FontSize="16"/>
+          <TextBlock Text="{Binding Comparison.BaselineFederalTax, StringFormat='Baseline Federal Tax: {0:C}'}" />
+          <TextBlock Text="{Binding Comparison.VariantFederalTax, StringFormat='Variant Federal Tax: {0:C}'}" />
+          <TextBlock Text="{Binding Comparison.FederalTaxDelta, StringFormat='Federal Tax Difference: {0:C}'}" FontWeight="Bold"/>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
